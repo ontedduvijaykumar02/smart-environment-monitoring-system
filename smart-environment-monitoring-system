@@ -1,0 +1,35 @@
+#include <DHT.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+#define DHTPIN 2
+#define DHTTYPE DHT11
+#define MQ135 A0
+
+DHT dht(DHTPIN, DHTTYPE);
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+void setup() {
+  lcd.init();
+  lcd.backlight();
+  dht.begin();
+  Serial.begin(9600);
+}
+
+void loop() {
+  float temp = dht.readTemperature();
+  float hum = dht.readHumidity();
+  int air = analogRead(MQ135);
+
+  lcd.setCursor(0,0);
+  lcd.print("T:");
+  lcd.print(temp);
+  lcd.print(" H:");
+  lcd.print(hum);
+
+  lcd.setCursor(0,1);
+  lcd.print("Air:");
+  lcd.print(air);
+
+  delay(2000);
+}
